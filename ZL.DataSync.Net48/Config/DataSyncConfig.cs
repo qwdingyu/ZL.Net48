@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace ZL.DataSync.Config;
 
 /// <summary>

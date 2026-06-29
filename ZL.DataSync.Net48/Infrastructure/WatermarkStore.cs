@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using SqlSugar;
 
 namespace ZL.DataSync.Infrastructure;
