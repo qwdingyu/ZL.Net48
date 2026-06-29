@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "4PvRKAg/cQo=",
+  "success": true,
+  "projectFilePath": "/Users/dingyuwang/0-X/iot-sdk/src/application/ZL.DataSync.Net48/ZL.DataSync.Net48.csproj",
+  "expectedPackageFiles": [
+    "/tmp/nuget-test/microsoft.build.tasks.git/8.0.0/microsoft.build.tasks.git.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.diagnostics.abstractions/8.0.0/microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.fileproviders.abstractions/8.0.0/microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.hosting.abstractions/8.0.0/microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.sourcelink.common/8.0.0/microsoft.sourcelink.common.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/microsoft.sourcelink.github/8.0.0/microsoft.sourcelink.github.8.0.0.nupkg.sha512",
+    "/tmp/nuget-test/newtonsoft.json/13.0.4/newtonsoft.json.13.0.4.nupkg.sha512",
+    "/tmp/nuget-test/sqlsugar/5.1.4.207/sqlsugar.5.1.4.207.nupkg.sha512"
+  ],
+  "logs": []
+}
