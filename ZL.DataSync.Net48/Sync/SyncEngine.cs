@@ -519,13 +519,12 @@ public sealed class SyncEngine : IDisposable
             _targetEntries.Clear();
         }
 
-        // 等待后台任务完成（最多 15 秒）
+        // 等待目标同步任务完成（最多 15 秒）
+        // 注意：不等待 _cleanupTask，因为 CleanupLoopAsync 可能因 CleanupIntervalSeconds 很长而阻塞在 Task.Delay
+        // 连接将在 Dispose 中显式关闭，确保文件锁释放
         try
         {
-            var allTasks = new List<Task>();
-            allTasks.AddRange(runningTasks);
-            if (_cleanupTask != null) allTasks.Add(_cleanupTask);
-            Task.WaitAll(allTasks.ToArray(), TimeSpan.FromSeconds(15));
+            Task.WaitAll(runningTasks.ToArray(), TimeSpan.FromSeconds(15));
         }
         catch
         {
