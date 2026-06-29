@@ -74,9 +74,11 @@ public sealed class SyncEngineTests
             RemoteTargets = new List<ZL.DataSync.Config.RemoteTargetConfig>()
         };
 
+        ZL.DataSync.SyncEngine? engine = null;
+        Exception? ex = null;
         try
         {
-            using var engine = new ZL.DataSync.SyncEngine(config);
+            engine = new ZL.DataSync.SyncEngine(config);
             engine.Start();
 
             Assert.AreEqual(0, engine.Status.TotalTables);
@@ -88,10 +90,20 @@ public sealed class SyncEngineTests
             Assert.IsTrue(completed == stopTask);
             Assert.IsFalse(engine.Status.IsRunning);
         }
-        catch (Exception ex)
+        catch (Exception e) { ex = e; }
+        finally { engine?.Dispose(); }
+
+        if (ex == null) return;
+
+        Console.WriteLine($"TEST FAILED: {ex.GetType().FullName}: {ex.Message}");
+        Console.WriteLine(ex.StackTrace);
+        if (ex is AggregateException agg)
         {
-            Assert.Fail($"测试异常: {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+            Console.WriteLine($"INNER: {agg.InnerException?.GetType().FullName}: {agg.InnerException?.Message}");
+            Console.WriteLine(agg.InnerException?.StackTrace);
         }
+
+        Assert.Fail($"测试异常: {ex.GetType().Name}: {ex.Message}");
     }
 
     [TestMethod]
