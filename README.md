@@ -11,7 +11,10 @@
 
 ## 构建
 
-本仓库包含 .NET Framework 4.8 项目，请在 Windows 环境构建：
+本仓库包含 .NET Framework 4.8 项目，正式构建环境为 Windows：
+
+- GitHub Actions：`windows-latest`
+- 本地开发：Windows + .NET SDK（需安装 .NET Framework 4.8  targeting pack）
 
 ```bash
 cd ZL.DataSync.Net48
@@ -23,6 +26,8 @@ dotnet pack ZL.DataSync.Net48.csproj -c Release
 ```text
 ZL.DataSync.Net48/bin/Release/net48/ZL.DataSync.Net48.{version}.nupkg
 ```
+
+> 注意：`.NET Framework 4.8`  targeting/reference assemblies 为 Windows 专属。在 macOS/Linux 上直接执行 `dotnet build/pack` 通常会报 `CS0246` 等基础类型缺失错误，这属于环境限制，不是代码问题。生产打包请以 Windows 环境或 GitHub Actions 结果为准。
 
 ## 发布
 
