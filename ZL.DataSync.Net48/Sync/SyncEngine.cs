@@ -166,10 +166,13 @@ public sealed class SyncEngine : IDisposable
         // 等待清理任务完成（如果有）
         if (_cleanupTask != null)
         {
-            try { await Task.WhenAny(_cleanupTask, Task.Delay(10000)).ConfigureAwait(false); }
+            try
+            {
+                await Task.WhenAny(_cleanupTask, Task.Delay(10000)).ConfigureAwait(false);
+                if (!_cleanupTask.IsCompleted)
+                    _logger.Warning("清理任务在超时后仍未完成");
+            }
             catch (Exception ex) { _logger.Warning($"停止清理循环时异常: {ex.Message}"); }
-            try { _cleanupTask.Wait(10000); }
-            catch { }
         }
 
         _status.IsRunning = false;

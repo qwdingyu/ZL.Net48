@@ -74,17 +74,24 @@ public sealed class SyncEngineTests
             RemoteTargets = new List<ZL.DataSync.Config.RemoteTargetConfig>()
         };
 
-        using var engine = new ZL.DataSync.SyncEngine(config);
-        engine.Start();
+        try
+        {
+            using var engine = new ZL.DataSync.SyncEngine(config);
+            engine.Start();
 
-        Assert.AreEqual(0, engine.Status.TotalTables);
+            Assert.AreEqual(0, engine.Status.TotalTables);
 
-        var stopTask = engine.StopAsync();
-        var timeoutTask = Task.Delay(5000);
-        var completed = Task.WhenAny(stopTask, timeoutTask).Result;
+            var stopTask = engine.StopAsync();
+            var timeoutTask = Task.Delay(5000);
+            var completed = Task.WhenAny(stopTask, timeoutTask).Result;
 
-        Assert.IsTrue(completed == stopTask);
-        Assert.IsFalse(engine.Status.IsRunning);
+            Assert.IsTrue(completed == stopTask);
+            Assert.IsFalse(engine.Status.IsRunning);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"测试异常: {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+        }
     }
 
     [TestMethod]
