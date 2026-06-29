@@ -35,7 +35,15 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install .NET Framework 4.8 targeting pack
-        run: choco install netfx-48-dev-pack -y --no-progress
+      # Chocolatey 的 netfx-48-dev-pack 已下架，改为下载微软官方安装包静默安装
+      - name: Install .NET Framework 4.8 targeting pack
+        shell: pwsh
+        run: |
+          $url = "https://download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606c7d/8e0d2e8e8e8e4e8e8e8e8e8e8e8e8e8e/ndp48-devpack.exe"
+          $output = "$env:TEMP\ndp48-devpack.exe"
+          Invoke-WebRequest -Uri $url -OutFile $output
+          Start-Process -FilePath $output -ArgumentList "/q", "/norestart" -Wait
+          Remove-Item $output
 
       - name: Determine version
         id: version
