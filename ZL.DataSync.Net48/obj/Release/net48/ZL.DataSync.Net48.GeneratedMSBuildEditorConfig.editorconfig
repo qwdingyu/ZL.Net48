@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = ZL.DataSync
+build_property.ProjectDir = /Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

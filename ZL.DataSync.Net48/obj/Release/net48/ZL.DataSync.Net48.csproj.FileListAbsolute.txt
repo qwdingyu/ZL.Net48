@@ -1,0 +1,6 @@
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.csproj.AssemblyReference.cache
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.GeneratedMSBuildEditorConfig.editorconfig
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.AssemblyInfoInputs.cache
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.AssemblyInfo.cs
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.csproj.CoreCompileInputs.cache
+/Users/dingyuwang/0-X/1-dotnet/ZL.Net48/ZL.DataSync.Net48/obj/Release/net48/ZL.DataSync.Net48.sourcelink.json
