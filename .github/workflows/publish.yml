@@ -1,0 +1,98 @@
+name: Publish ZL.Net48 to NuGet
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
+      skip-obfuscate:
+        description: 'Skip Obfuscar obfuscation'
+        type: boolean
+        default: true
+      dry-run:
+        description: 'Dry run (pack only, no push)'
+        type: boolean
+        default: false
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  build-and-pack:
+    runs-on: windows-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Restore
+        shell: bash
+        run: |
+          dotnet restore ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --nologo
+
+      - name: Build & pack
+        shell: bash
+        run: |
+          dotnet build ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release --no-restore --nologo
+          mkdir -p artifacts/packages
+          dotnet pack ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release --no-build -p:PackageVersion=${{ steps.version.outputs.version }} -p:ContinuousIntegrationBuild=true -o artifacts/packages --nologo
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages-${{ steps.version.outputs.version }}
+          path: artifacts/packages/*.nupkg
+          retention-days: 14
+
+  push-to-nuget:
+    needs: build-and-pack
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run != true)
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages-${{ needs.build-and-pack.outputs.version }}
+          path: artifacts/packages
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: NuGet login (OIDC -> temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: dingyuw
+
+      - name: Push to NuGet.org
+        shell: bash
+        run: |
+          for pkg in artifacts/packages/*.nupkg; do
+            echo "  -> $(basename $pkg)"
+            dotnet nuget push "$pkg" \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key ${{ steps.login.outputs.NUGET_API_KEY }} \
+              --skip-duplicate
+          done
+          echo "Published version ${{ needs.build-and-pack.outputs.version }} to NuGet.org"
