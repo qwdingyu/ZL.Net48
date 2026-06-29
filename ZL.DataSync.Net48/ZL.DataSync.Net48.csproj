@@ -7,9 +7,14 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>ZL.DataSync.Net48</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>dingyuw</Authors>
+        <Company>ZL</Company>
         <Description>ZL.DataSync 的 .NET Framework 4.8 独立兼容版本，用于桌面 Runner 免 .NET Core 运行时场景。</Description>
+        <Copyright>Copyright (c) ZL</Copyright>
+        <RepositoryUrl>https://github.com/qwdingyu/ZL.Net48</RepositoryUrl>
         <AssemblyOriginatorKeyFile>
         </AssemblyOriginatorKeyFile>
         <SignAssembly>false</SignAssembly>
