@@ -103,10 +103,10 @@ public sealed class SyncEngineTests
             ex = e;
             Log($"CAUGHT: {e.GetType().FullName}: {e.Message}");
             Log(e.StackTrace ?? "");
-            if (e is AggregateException agg)
+            if (e is AggregateException agg1)
             {
-                Log($"INNER: {agg.InnerException?.GetType().FullName}: {agg.InnerException?.Message}");
-                Log(agg.InnerException?.StackTrace ?? "");
+                Log($"INNER: {agg1.InnerException?.GetType().FullName}: {agg1.InnerException?.Message}");
+                Log(agg1.InnerException?.StackTrace ?? "");
             }
         }
         finally { engine?.Dispose(); }
@@ -131,10 +131,10 @@ public sealed class SyncEngineTests
             ex = e;
             Log($"CAUGHT: {e.GetType().FullName}: {e.Message}");
             Log(e.StackTrace ?? "");
-            if (e is AggregateException agg)
+            if (e is AggregateException agg2)
             {
-                Log($"INNER: {agg.InnerException?.GetType().FullName}: {agg.InnerException?.Message}");
-                Log(agg.InnerException?.StackTrace ?? "");
+                Log($"INNER: {agg2.InnerException?.GetType().FullName}: {agg2.InnerException?.Message}");
+                Log(agg2.InnerException?.StackTrace ?? "");
             }
         }
 
@@ -150,7 +150,7 @@ public sealed class SyncEngineTests
             Log("PASS: ArgumentNullException");
             return;
         }
-        if (ex is AggregateException agg && agg.InnerException is ArgumentNullException)
+        if (ex is AggregateException agg3 && agg3.InnerException is ArgumentNullException)
         {
             Log("PASS: AggregateException wrapping ArgumentNullException");
             return;
@@ -180,10 +180,10 @@ public sealed class SyncEngineTests
             ex = e;
             Log($"CAUGHT: {e.GetType().FullName}: {e.Message}");
             Log(e.StackTrace ?? "");
-            if (e is AggregateException agg)
+            if (e is AggregateException agg4)
             {
-                Log($"INNER: {agg.InnerException?.GetType().FullName}: {agg.InnerException?.Message}");
-                Log(agg.InnerException?.StackTrace ?? "");
+                Log($"INNER: {agg4.InnerException?.GetType().FullName}: {agg4.InnerException?.Message}");
+                Log(agg4.InnerException?.StackTrace ?? "");
             }
         }
 
@@ -199,7 +199,7 @@ public sealed class SyncEngineTests
             Log("PASS: ArgumentException");
             return;
         }
-        if (ex is AggregateException agg && agg.InnerException is ArgumentException)
+        if (ex is AggregateException agg5 && agg5.InnerException is ArgumentException)
         {
             Log("PASS: AggregateException wrapping ArgumentException");
             return;
