@@ -1,0 +1,60 @@
+name: Test ZL.DataSync.Net48
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_FRAMEWORK_REFERENCES_PATH: 'C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8'
+
+jobs:
+  test-net48:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install .NET Framework 4.8 targeting pack
+        shell: pwsh
+        run: |
+          $url = "https://go.microsoft.com/fwlink/?linkid=2088631"
+          $output = "$env:TEMP\ndp48-devpack.exe"
+          Invoke-WebRequest -Uri $url -OutFile $output
+          Start-Process -FilePath $output -ArgumentList "/q", "/norestart" -Wait
+          Remove-Item $output
+
+      - name: Verify targeting pack installation
+        run: dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+
+      - name: Restore
+        shell: bash
+        run: |
+          dotnet restore ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --nologo
+          dotnet restore ZL.DataSync.Net48.Tests/ZL.DataSync.Net48.Tests.csproj --nologo
+
+      - name: Build
+        shell: bash
+        run: |
+          dotnet build ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --framework net48 --configuration Release --no-restore --nologo
+          dotnet build ZL.DataSync.Net48.Tests/ZL.DataSync.Net48.Tests.csproj --framework net48 --configuration Release --no-restore --nologo
+
+      - name: Test
+        shell: bash
+        run: |
+          dotnet test ZL.DataSync.Net48.Tests/ZL.DataSync.Net48.Tests.csproj --framework net48 --configuration Release --no-build --nologo --logger "trx;LogFileName=test_results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-net48
+          path: '**/*.trx'
+          retention-days: 14
