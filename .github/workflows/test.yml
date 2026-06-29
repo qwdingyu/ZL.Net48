@@ -49,7 +49,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          dotnet test ZL.DataSync.Net48.Tests/ZL.DataSync.Net48.Tests.csproj --framework net48 --configuration Release --no-build --nologo --logger "trx;LogFileName=test_results.trx"
+          dotnet test ZL.DataSync.Net48.Tests/ZL.DataSync.Net48.Tests.csproj --framework net48 --configuration Release --no-build --nologo --logger "trx;LogFileName=test_results.trx" --logger "console;verbosity=detailed"
 
       - name: Upload test results
         if: always()
