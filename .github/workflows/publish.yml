@@ -20,6 +20,7 @@ on:
 
 env:
   DOTNET_NOLOGO: true
+  DOTNET_FRAMEWORK_REFERENCES_PATH: 'C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8'
 
 jobs:
   build-and-pack:
