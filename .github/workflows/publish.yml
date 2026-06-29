@@ -63,6 +63,9 @@ jobs:
         run: |
           dotnet restore ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --nologo
 
+      - name: Setup MSBuild
+        uses: actions/setup-msbuild@v2
+
       - name: Build & pack
         shell: pwsh
         run: |
