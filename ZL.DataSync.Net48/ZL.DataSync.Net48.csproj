@@ -18,10 +18,6 @@
         <AssemblyOriginatorKeyFile>
         </AssemblyOriginatorKeyFile>
         <SignAssembly>false</SignAssembly>
-        <!-- 让 .NET SDK 在构建 .NET Framework 4.8 时自动补充 Windows 专属框架引用，解决 BCL/System.Net.Http 等类型缺失问题 -->
-        <UseWindowsCompatibility>true</UseWindowsCompatibility>
-        <!-- 启用 Windows  targeting，确保 .NET Framework 4.8 参考程序集被正确引用 -->
-        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
 
     <ItemGroup>
@@ -37,33 +33,33 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
         <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" />
     </ItemGroup>
 
-    <!-- 在非 Windows 环境下显式引用 .NET Framework 4.8 参考程序集 -->
     <ItemGroup>
         <Reference Include="System.Net.Http">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Net.Http.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Net.Http.dll</HintPath>
         </Reference>
         <Reference Include="System.IO.Compression">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.IO.Compression.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.IO.Compression.dll</HintPath>
         </Reference>
         <Reference Include="System.IO.Compression.FileSystem">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.IO.Compression.FileSystem.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.IO.Compression.FileSystem.dll</HintPath>
         </Reference>
         <Reference Include="System.Xml">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Xml.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Xml.dll</HintPath>
         </Reference>
         <Reference Include="System.Xml.Linq">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Xml.Linq.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Xml.Linq.dll</HintPath>
         </Reference>
         <Reference Include="System.Data">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Data.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Data.dll</HintPath>
         </Reference>
         <Reference Include="System.Core">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Core.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\System.Core.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CSharp">
-            <HintPath>$(UserProfile)\.nuget\packages\microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\Microsoft.CSharp.dll</HintPath>
+            <HintPath>$(NuGetPackageRoot)microsoft.netframework.referenceassemblies.net48\1.0.3\build\.NETFramework\v4.8\Microsoft.CSharp.dll</HintPath>
         </Reference>
     </ItemGroup>
 
