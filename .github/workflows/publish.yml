@@ -34,7 +34,6 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install .NET Framework 4.8 targeting pack
       # Chocolatey 的 netfx-48-dev-pack 已下架，改为下载微软官方安装包静默安装
       - name: Install .NET Framework 4.8 targeting pack
         shell: pwsh
