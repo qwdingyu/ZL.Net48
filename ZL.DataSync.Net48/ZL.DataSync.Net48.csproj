@@ -30,10 +30,8 @@
 
     <ItemGroup>
         <PackageReference Update="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all">
-          <Framework>net48</Framework>
-        </PackageReference>
         <PackageReference Include="SqlSugar" />
+        <PackageReference Include="System.Data.SQLite.Core" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
