@@ -20,6 +20,8 @@
         <SignAssembly>false</SignAssembly>
         <!-- 让 .NET SDK 在构建 .NET Framework 4.8 时自动补充 Windows 专属框架引用，解决 BCL/System.Net.Http 等类型缺失问题 -->
         <UseWindowsCompatibility>true</UseWindowsCompatibility>
+        <!-- 启用 Windows  targeting，确保 .NET Framework 4.8 参考程序集被正确引用 -->
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
 
     <ItemGroup>
