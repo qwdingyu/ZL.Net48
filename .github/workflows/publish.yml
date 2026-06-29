@@ -63,13 +63,11 @@ jobs:
         run: |
           dotnet restore ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --nologo
 
-      - name: Setup MSBuild
-        uses: actions/setup-msbuild@v2
-
       - name: Build & pack
         shell: pwsh
         run: |
-          msbuild ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release /t:Pack /p:PackageVersion=${{ steps.version.outputs.version }} /p:ContinuousIntegrationBuild=true /p:PackageOutputPath=artifacts/packages /nologo
+          $msbuild = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          & $msbuild ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release /t:Pack /p:PackageVersion=${{ steps.version.outputs.version }} /p:ContinuousIntegrationBuild=true /p:PackageOutputPath=artifacts/packages /nologo
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
@@ -80,7 +78,7 @@ jobs:
 
   push-to-nuget:
     needs: build-and-pack
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run != true)
     permissions:
       id-token: write
