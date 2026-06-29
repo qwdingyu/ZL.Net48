@@ -99,9 +99,12 @@ public sealed class SyncEngineTests
         {
             // 预期异常
         }
-        catch (AggregateException agg) when (agg.InnerException is ArgumentNullException)
+        catch (AggregateException agg)
         {
-            // MSTest 包装的异常
+            // MSTest 可能将异常包装为 AggregateException
+            if (agg.InnerException is ArgumentNullException)
+                return;
+            Assert.Fail($"预期 ArgumentNullException，实际: {agg.InnerException?.GetType().Name ?? "null"}");
         }
     }
 
@@ -122,9 +125,12 @@ public sealed class SyncEngineTests
         {
             // 预期异常
         }
-        catch (AggregateException agg) when (agg.InnerException is ArgumentException)
+        catch (AggregateException agg)
         {
-            // MSTest 包装的异常
+            // MSTest 可能将异常包装为 AggregateException
+            if (agg.InnerException is ArgumentException)
+                return;
+            Assert.Fail($"预期 ArgumentException，实际: {agg.InnerException?.GetType().Name ?? "null"}");
         }
     }
 }

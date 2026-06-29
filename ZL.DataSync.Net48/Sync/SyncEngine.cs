@@ -168,6 +168,8 @@ public sealed class SyncEngine : IDisposable
         {
             try { await Task.WhenAny(_cleanupTask, Task.Delay(10000)).ConfigureAwait(false); }
             catch (Exception ex) { _logger.Warning($"停止清理循环时异常: {ex.Message}"); }
+            try { _cleanupTask.Wait(10000); }
+            catch { }
         }
 
         _status.IsRunning = false;
