@@ -64,11 +64,9 @@ jobs:
           dotnet restore ZL.DataSync.Net48/ZL.DataSync.Net48.csproj --nologo
 
       - name: Build & pack
-        shell: bash
+        shell: pwsh
         run: |
-          dotnet build ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release --no-restore --nologo
-          mkdir -p artifacts/packages
-          dotnet pack ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release --no-build -p:PackageVersion=${{ steps.version.outputs.version }} -p:ContinuousIntegrationBuild=true -o artifacts/packages --nologo
+          msbuild ZL.DataSync.Net48/ZL.DataSync.Net48.csproj -c Release /t:Pack /p:PackageVersion=${{ steps.version.outputs.version }} /p:ContinuousIntegrationBuild=true /p:PackageOutputPath=artifacts/packages /nologo
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
