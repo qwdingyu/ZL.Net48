@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,7 +65,7 @@ public sealed class SyncEngine : IDisposable
         // 使用外部传入的共享连接，避免多客户端打开同一 SQLite 文件
         _localDb = sharedLocalClient ?? new SqlSugarClient(new ConnectionConfig
         {
-            DbType = DbType.Sqlite,
+            DbType = SqlSugar.DbType.Sqlite,
             ConnectionString = $"Data Source={_config.LocalDbPath}",
             IsAutoCloseConnection = false  // 复用连接
         });
