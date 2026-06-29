@@ -31,10 +31,19 @@ public sealed class DatabaseSyncStrategy : SyncStrategyBase
     /// <param name="target">远程目标配置</param>
     /// <param name="logger">结构化日志</param>
     public DatabaseSyncStrategy(RemoteTargetConfig target, IStructuredLogger logger)
-        : base(target.Name, target.ConnectionString, SqlSugarHelpers.MapDbType(target.Type), logger)
+        : base(GetName(target), GetConnectionString(target), GetDbType(target), logger ?? throw new ArgumentNullException(nameof(logger)))
     {
         _target = target ?? throw new ArgumentNullException(nameof(target));
     }
+
+    private static string GetName(RemoteTargetConfig target)
+        => target?.Name ?? throw new ArgumentNullException(nameof(target));
+
+    private static string GetConnectionString(RemoteTargetConfig target)
+        => target?.ConnectionString ?? throw new ArgumentNullException(nameof(target));
+
+    private static SqlSugar.DbType GetDbType(RemoteTargetConfig target)
+        => target == null ? throw new ArgumentNullException(nameof(target)) : SqlSugarHelpers.MapDbType(target.Type);
 
     /// <summary>
     /// 同步单表数据到远程目标。
