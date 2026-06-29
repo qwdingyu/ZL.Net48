@@ -45,6 +45,9 @@ jobs:
           Start-Process -FilePath $output -ArgumentList "/q", "/norestart" -Wait
           Remove-Item $output
 
+      - name: Verify targeting pack installation
+        run: dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+
       - name: Determine version
         id: version
         shell: bash
