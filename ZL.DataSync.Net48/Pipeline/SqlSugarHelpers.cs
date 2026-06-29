@@ -71,8 +71,11 @@ internal static class SqlSugarHelpers
         foreach (var row in dynamicRows)
         {
             var dict = ConvertToDictionary(row);
-            if (dict != null && dict.Count > 0)
-                rows.Add(dict);
+            if (dict != null)
+            {
+                if (dict.Count > 0)
+                    rows.Add(dict);
+            }
         }
         return rows;
     }

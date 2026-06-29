@@ -62,7 +62,7 @@ public sealed class DatabaseSyncStrategy : SyncStrategyBase
         CancellationToken ct)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        string targetTable = string.IsNullOrWhiteSpace(remoteTable) ? tableName : remoteTable;
+        string targetTable = string.IsNullOrWhiteSpace(remoteTable) ? tableName : remoteTable!;
 
         // 1. 读取未同步数据（基于 _Synced = 0 标记）
         // 注意：SqlSugar 的 SqlQuery&lt;Dictionary&gt; 返回空 keys，必须用 SqlQuery&lt;dynamic&gt; 再转换
@@ -82,7 +82,7 @@ public sealed class DatabaseSyncStrategy : SyncStrategyBase
             return SyncReport.Ok(tableName, 0, 0, null, sw.Elapsed.TotalMilliseconds);
 
         // 3. 确保远程表存在（DCL 双重检查锁）
-        await EnsureTableAsync(targetTable, rows[0], ct).ConfigureAwait(false);
+        await EnsureTableAsync(targetTable, rows[0]!, ct).ConfigureAwait(false);
 
         // 4. 批量写入远程（每 MaxRemoteBatchSize 条一批）
         // 水位线逻辑：只从 successRows 中提取最大 ProcessTime，

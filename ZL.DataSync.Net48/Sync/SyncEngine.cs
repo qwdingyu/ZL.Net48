@@ -31,6 +31,9 @@ public sealed class SyncEngine : IDisposable
     // 已发现的本地表（线程安全只读）
     private HashSet<string> _discoveredTables;
 
+    // 清理任务（需要等待其完成以释放 SQLite 文件锁）
+    private Task? _cleanupTask;
+
     /// <summary>同步状态查询</summary>
     public SyncStatus Status => _status;
 
@@ -120,7 +123,7 @@ public sealed class SyncEngine : IDisposable
         // 启动清理循环（如果启用）
         if (_config.EnableCleanup)
         {
-            _ = Task.Run(() => CleanupLoopAsync(_cts.Token), _cts.Token);
+            _cleanupTask = Task.Run(() => CleanupLoopAsync(_cts.Token), _cts.Token);
             _logger.Info($"数据清理已启动，间隔 {_config.CleanupIntervalSeconds}s，保留 {_config.DataRetentionDays} 天");
         }
 
@@ -159,6 +162,13 @@ public sealed class SyncEngine : IDisposable
         }
 
         foreach (var s in strategies) s.Dispose();
+
+        // 等待清理任务完成（如果有）
+        if (_cleanupTask != null)
+        {
+            try { await Task.WhenAny(_cleanupTask, Task.Delay(10000)).ConfigureAwait(false); }
+            catch (Exception ex) { _logger.Warning($"停止清理循环时异常: {ex.Message}"); }
+        }
 
         _status.IsRunning = false;
         _status.StatusText = "已停止";
@@ -405,7 +415,7 @@ public sealed class SyncEngine : IDisposable
             var cols = db.Ado.SqlQuery<ColumnInfoRow>($"PRAGMA table_info(\"{table}\")");
             return cols != null && cols.Any(r => r.Name == colName);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false; // PRAGMA 失败（表不存在等）不影响主流程
         }
@@ -477,6 +487,9 @@ public sealed class SyncEngine : IDisposable
         // 仅在 ownsLocalDb 为 true 时才释放连接（由 SyncEngine 自己创建的连接才由它释放）
         if (_ownsLocalDb)
         {
+            // 显式关闭底层连接，确保 SQLite 文件锁及时释放，避免 TestCleanup 删除失败
+            if (_localDb is SqlSugarClient sqlClient)
+                sqlClient.Close();
             _localDb?.Dispose();
         }
         _watermark?.Dispose();
@@ -504,7 +517,10 @@ public sealed class SyncEngine : IDisposable
         // 等待后台任务完成（最多 15 秒）
         try
         {
-            Task.WaitAll(runningTasks.ToArray(), TimeSpan.FromSeconds(15));
+            var allTasks = new List<Task>();
+            allTasks.AddRange(runningTasks);
+            if (_cleanupTask != null) allTasks.Add(_cleanupTask);
+            Task.WaitAll(allTasks.ToArray(), TimeSpan.FromSeconds(15));
         }
         catch
         {

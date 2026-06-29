@@ -57,7 +57,7 @@ public sealed class ProcessTimeSyncStrategy : SyncStrategyBase
         CancellationToken ct)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        string targetTable = string.IsNullOrWhiteSpace(remoteTable) ? tableName : remoteTable;
+        string targetTable = string.IsNullOrWhiteSpace(remoteTable) ? tableName : remoteTable!;
 
         // 1. 读取 _SyncLog 水位线（与 PcStationIot RemoteSyncService.ReadSyncTimeAsync 一致）
         DateTime? lastSyncTime = await ReadSyncLogAsync(localDb, tableName, ct).ConfigureAwait(false);
@@ -75,7 +75,7 @@ public sealed class ProcessTimeSyncStrategy : SyncStrategyBase
             return SyncReport.Ok(tableName, 0, 0, null, sw.Elapsed.TotalMilliseconds);
 
         // 3. 确保远程表存在
-        await EnsureTableAsync(targetTable, rows[0], ct).ConfigureAwait(false);
+        await EnsureTableAsync(targetTable, rows[0]!, ct).ConfigureAwait(false);
 
         // 4. 批量写入远程（每 MaxRemoteBatchSize 条一批）
         // 水位线逻辑：只从 successRows 中提取最大 ProcessTime，

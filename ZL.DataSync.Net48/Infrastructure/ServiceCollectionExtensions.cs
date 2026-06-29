@@ -45,7 +45,7 @@ public static class DataSyncServiceCollectionExtensions
 
         var localDbPath = section["LocalDbPath"];
         if (!string.IsNullOrWhiteSpace(localDbPath))
-            config.LocalDbPath = localDbPath;
+            config.LocalDbPath = localDbPath ?? string.Empty;
 
         var batchSizeStr = section["BatchSize"];
         if (int.TryParse(batchSizeStr, out var batchSize))
@@ -78,20 +78,20 @@ public static class DataSyncServiceCollectionExtensions
             var name = section[$"RemoteTargets:{i}:Name"];
             if (string.IsNullOrWhiteSpace(name)) break;
 
-            var target = new RemoteTargetConfig { Name = name };
+            var target = new RemoteTargetConfig { Name = name ?? string.Empty };
             var typeStr = section[$"RemoteTargets:{i}:Type"];
             if (Enum.TryParse(typeStr, ignoreCase: true, out TargetType type))
                 target.Type = type;
 
             var connStr = section[$"RemoteTargets:{i}:ConnectionString"];
             if (!string.IsNullOrWhiteSpace(connStr))
-                target.ConnectionString = connStr;
+                target.ConnectionString = connStr!;
 
             if (target.Type == TargetType.Http)
             {
                 var httpEndpoint = section[$"RemoteTargets:{i}:HttpConfig:Endpoint"];
                 if (!string.IsNullOrWhiteSpace(httpEndpoint))
-                    target.HttpConfig = new HttpUploadConfig { Endpoint = httpEndpoint };
+                    target.HttpConfig = new HttpUploadConfig { Endpoint = httpEndpoint! };
 
                 var httpTimeoutStr = section[$"RemoteTargets:{i}:HttpConfig:TimeoutSeconds"];
                 if (int.TryParse(httpTimeoutStr, out var httpTimeout) && target.HttpConfig != null)

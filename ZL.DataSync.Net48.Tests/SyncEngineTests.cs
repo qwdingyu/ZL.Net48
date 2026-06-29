@@ -99,6 +99,10 @@ public sealed class SyncEngineTests
         {
             // 预期异常
         }
+        catch (AggregateException agg) when (agg.InnerException is ArgumentNullException)
+        {
+            // MSTest 包装的异常
+        }
     }
 
     [TestMethod]
@@ -117,6 +121,10 @@ public sealed class SyncEngineTests
         catch (ArgumentException)
         {
             // 预期异常
+        }
+        catch (AggregateException agg) when (agg.InnerException is ArgumentException)
+        {
+            // MSTest 包装的异常
         }
     }
 }
