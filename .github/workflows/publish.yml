@@ -38,7 +38,7 @@ jobs:
       - name: Install .NET Framework 4.8 targeting pack
         shell: pwsh
         run: |
-          $url = "https://download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606c7d/8e0d2e8e8e8e4e8e8e8e8e8e8e8e8e8e/ndp48-devpack.exe"
+          $url = "https://go.microsoft.com/fwlink/?linkid=2088631"
           $output = "$env:TEMP\ndp48-devpack.exe"
           Invoke-WebRequest -Uri $url -OutFile $output
           Start-Process -FilePath $output -ArgumentList "/q", "/norestart" -Wait
