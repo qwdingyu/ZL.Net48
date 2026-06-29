@@ -109,21 +109,7 @@ public sealed class SyncEngineTests
     [TestMethod]
     public void SyncEngine_空配置_应抛出异常()
     {
-        Exception? ex = null;
-        try
-        {
-            new ZL.DataSync.SyncEngine(null!);
-            Assert.Fail("应抛出 ArgumentNullException");
-        }
-        catch (Exception e) { ex = e; }
-
-        if (ex == null) Assert.Fail("未捕获到异常");
-
-        // MSTest 可能将异常包装为 AggregateException
-        if (ex is ArgumentNullException) return;
-        if (ex is AggregateException agg && agg.InnerException is ArgumentNullException) return;
-
-        Assert.Fail($"预期 ArgumentNullException，实际: {ex.GetType().FullName}: {ex.Message}");
+        Assert.ThrowsException<ArgumentNullException>(() => new ZL.DataSync.SyncEngine(null!));
     }
 
     [TestMethod]
@@ -134,20 +120,6 @@ public sealed class SyncEngineTests
             LocalDbPath = string.Empty
         };
 
-        Exception? ex = null;
-        try
-        {
-            new ZL.DataSync.SyncEngine(config);
-            Assert.Fail("应抛出 ArgumentException");
-        }
-        catch (Exception e) { ex = e; }
-
-        if (ex == null) Assert.Fail("未捕获到异常");
-
-        // MSTest 可能将异常包装为 AggregateException
-        if (ex is ArgumentException) return;
-        if (ex is AggregateException agg && agg.InnerException is ArgumentException) return;
-
-        Assert.Fail($"预期 ArgumentException，实际: {ex.GetType().FullName}: {ex.Message}");
+        Assert.ThrowsException<ArgumentException>(() => new ZL.DataSync.SyncEngine(config));
     }
 }
