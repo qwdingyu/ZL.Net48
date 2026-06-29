@@ -18,6 +18,8 @@
         <AssemblyOriginatorKeyFile>
         </AssemblyOriginatorKeyFile>
         <SignAssembly>false</SignAssembly>
+        <!-- 让 .NET SDK 在构建 .NET Framework 4.8 时自动补充 Windows 专属框架引用，解决 BCL/System.Net.Http 等类型缺失问题 -->
+        <UseWindowsCompatibility>true</UseWindowsCompatibility>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,14 +27,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="all" />
-        <PackageReference Include="SqlSugar" Version="5.1.4.207" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+        <PackageReference Update="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all" />
+        <PackageReference Include="SqlSugar" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
 
 </Project>
