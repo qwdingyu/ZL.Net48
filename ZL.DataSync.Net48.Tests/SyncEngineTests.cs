@@ -153,8 +153,8 @@ public sealed class SyncEngineTests
             return;
         }
 
-        Console.WriteLine($"[TEST FAIL] expected ArgumentNullException, got {ex.GetType().FullName}");
-        Assert.Fail($"预期 ArgumentNullException，实际: {ex.GetType().FullName}: {ex.Message}");
+        // 将实际异常信息写入 Assert 失败消息，确保 TRX/ErrorInfo 可见
+        Assert.Fail($"预期 ArgumentNullException，实际: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
     }
 
     [TestMethod]
@@ -201,7 +201,7 @@ public sealed class SyncEngineTests
             return;
         }
 
-        Console.WriteLine($"[TEST FAIL] expected ArgumentException, got {ex.GetType().FullName}");
-        Assert.Fail($"预期 ArgumentException，实际: {ex.GetType().FullName}: {ex.Message}");
+        // 将实际异常信息写入 Assert 失败消息，确保 TRX/ErrorInfo 可见
+        Assert.Fail($"预期 ArgumentException，实际: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
     }
 }
