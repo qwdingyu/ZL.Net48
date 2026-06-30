@@ -58,3 +58,11 @@ jobs:
           name: test-results-net48
           path: '**/*.trx'
           retention-days: 14
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-diagnostics-net48
+          path: '**/diag_*.txt'
+          retention-days: 14

@@ -13,6 +13,12 @@ public sealed class SyncEngineTests
         Console.WriteLine(msg);
     }
 
+    private void AppendDiagnostic(string fileName, string msg)
+    {
+        try { File.AppendAllText(fileName, $"{DateTime.UtcNow:O} {msg}{Environment.NewLine}"); }
+        catch { /* ignore */ }
+    }
+
     [TestInitialize]
     public void Setup()
     {
@@ -74,6 +80,9 @@ public sealed class SyncEngineTests
             return;
         }
 
+        const string diag = "diag_syncengine_no_remote.txt";
+        try { File.Delete(diag); } catch { /* ignore */ }
+
         var config = new ZL.DataSync.Config.DataSyncConfig
         {
             LocalDbPath = TestDbPath,
@@ -86,10 +95,11 @@ public sealed class SyncEngineTests
         Exception? ex = null;
         try
         {
-            Log("[TEST START] SyncEngine_无远程目标_应正常启动但不报错");
+            AppendDiagnostic(diag, "[TEST START] SyncEngine_无远程目标_应正常启动但不报错");
             engine = new ZL.DataSync.SyncEngine(config);
+            AppendDiagnostic(diag, $"[AFTER NEW] type={engine.GetType().FullName}");
             engine.Start();
-
+            AppendDiagnostic(diag, $"[AFTER START] TotalTables={engine.Status.TotalTables}");
             Assert.AreEqual(0, engine.Status.TotalTables);
 
             var stopTask = engine.StopAsync();
@@ -98,17 +108,17 @@ public sealed class SyncEngineTests
 
             Assert.IsTrue(completed == stopTask);
             Assert.IsFalse(engine.Status.IsRunning);
-            Log("[TEST PASS] no exception");
+            AppendDiagnostic(diag, "[TEST PASS] no exception");
         }
         catch (Exception e)
         {
             ex = e;
-            Log($"[CAUGHT] {e.GetType().FullName}: {e.Message}");
-            Log(e.StackTrace ?? "");
+            AppendDiagnostic(diag, $"[CAUGHT] {e.GetType().FullName}: {e.Message}");
+            AppendDiagnostic(diag, e.StackTrace ?? "");
             if (e is AggregateException agg1)
             {
-                Log($"[INNER] {agg1.InnerException?.GetType().FullName}: {agg1.InnerException?.Message}");
-                Log(agg1.InnerException?.StackTrace ?? "");
+                AppendDiagnostic(diag, $"[INNER] {agg1.InnerException?.GetType().FullName}: {agg1.InnerException?.Message}");
+                AppendDiagnostic(diag, agg1.InnerException?.StackTrace ?? "");
             }
         }
         finally { engine?.Dispose(); }
@@ -127,22 +137,26 @@ public sealed class SyncEngineTests
     [TestMethod]
     public void SyncEngine_空配置_应抛出异常()
     {
-        Log("[TEST START] SyncEngine_空配置_应抛出异常");
+        const string diag = "diag_syncengine_null_config.txt";
+        try { File.Delete(diag); } catch { /* ignore */ }
+
+        AppendDiagnostic(diag, "[TEST START] SyncEngine_空配置_应抛出异常");
         Exception? ex = null;
         try
         {
             new ZL.DataSync.SyncEngine(null!);
+            AppendDiagnostic(diag, "[AFTER NEW] NO EXCEPTION");
             Assert.Fail("应抛出 ArgumentNullException");
         }
         catch (Exception e)
         {
             ex = e;
-            Log($"[CAUGHT] {e.GetType().FullName}: {e.Message}");
-            Log(e.StackTrace ?? "");
+            AppendDiagnostic(diag, $"[CAUGHT] {e.GetType().FullName}: {e.Message}");
+            AppendDiagnostic(diag, e.StackTrace ?? "");
             if (e is AggregateException agg3)
             {
-                Log($"[INNER] {agg3.InnerException?.GetType().FullName}: {agg3.InnerException?.Message}");
-                Log(agg3.InnerException?.StackTrace ?? "");
+                AppendDiagnostic(diag, $"[INNER] {agg3.InnerException?.GetType().FullName}: {agg3.InnerException?.Message}");
+                AppendDiagnostic(diag, agg3.InnerException?.StackTrace ?? "");
             }
         }
 
@@ -156,7 +170,7 @@ public sealed class SyncEngineTests
         // 验证异常类型
         if (ex is ArgumentNullException)
         {
-            Log("[TEST PASS] ArgumentNullException");
+            AppendDiagnostic(diag, "[TEST PASS] ArgumentNullException");
             return;
         }
 
@@ -168,7 +182,10 @@ public sealed class SyncEngineTests
     [TestMethod]
     public void SyncEngine_空LocalDbPath_应抛出异常()
     {
-        Log("[TEST START] SyncEngine_空LocalDbPath_应抛出异常");
+        const string diag = "diag_syncengine_empty_localdb.txt";
+        try { File.Delete(diag); } catch { /* ignore */ }
+
+        AppendDiagnostic(diag, "[TEST START] SyncEngine_空LocalDbPath_应抛出异常");
         var config = new ZL.DataSync.Config.DataSyncConfig
         {
             LocalDbPath = string.Empty
@@ -178,17 +195,18 @@ public sealed class SyncEngineTests
         try
         {
             new ZL.DataSync.SyncEngine(config);
+            AppendDiagnostic(diag, "[AFTER NEW] NO EXCEPTION");
             Assert.Fail("应抛出 ArgumentException");
         }
         catch (Exception e)
         {
             ex = e;
-            Log($"[CAUGHT] {e.GetType().FullName}: {e.Message}");
-            Log(e.StackTrace ?? "");
+            AppendDiagnostic(diag, $"[CAUGHT] {e.GetType().FullName}: {e.Message}");
+            AppendDiagnostic(diag, e.StackTrace ?? "");
             if (e is AggregateException agg5)
             {
-                Log($"[INNER] {agg5.InnerException?.GetType().FullName}: {agg5.InnerException?.Message}");
-                Log(agg5.InnerException?.StackTrace ?? "");
+                AppendDiagnostic(diag, $"[INNER] {agg5.InnerException?.GetType().FullName}: {agg5.InnerException?.Message}");
+                AppendDiagnostic(diag, agg5.InnerException?.StackTrace ?? "");
             }
         }
 
@@ -202,7 +220,7 @@ public sealed class SyncEngineTests
         // 验证异常类型
         if (ex is ArgumentException)
         {
-            Log("[TEST PASS] ArgumentException");
+            AppendDiagnostic(diag, "[TEST PASS] ArgumentException");
             return;
         }
 
