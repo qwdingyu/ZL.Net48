@@ -489,6 +489,13 @@ public sealed class SyncEngine : IDisposable
         // 安全释放：使用 Task.Wait 替代 .GetAwaiter().GetResult() 避免 SynchronizationContext 死锁
         DisposeSynchronously();
 
+        // 等待清理任务完成（最多 15 秒），确保 SQLite 连接全部释放
+        if (_cleanupTask != null)
+        {
+            try { _cleanupTask.Wait(TimeSpan.FromSeconds(15)); }
+            catch { /* 忽略等待期间的异常 */ }
+        }
+
         // 仅在 ownsLocalDb 为 true 时才释放连接（由 SyncEngine 自己创建的连接才由它释放）
         if (_ownsLocalDb)
         {

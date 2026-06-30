@@ -129,10 +129,10 @@ public sealed class SyncEngineTests
             ex = e;
             Console.WriteLine($"[CAUGHT] {e.GetType().FullName}: {e.Message}");
             Console.WriteLine(e.StackTrace ?? "");
-            if (e is AggregateException agg2)
+            if (e is AggregateException agg3)
             {
-                Console.WriteLine($"[INNER] {agg2.InnerException?.GetType().FullName}: {agg2.InnerException?.Message}");
-                Console.WriteLine(agg2.InnerException?.StackTrace ?? "");
+                Console.WriteLine($"[INNER] {agg3.InnerException?.GetType().FullName}: {agg3.InnerException?.Message}");
+                Console.WriteLine(agg3.InnerException?.StackTrace ?? "");
             }
         }
 
@@ -177,10 +177,10 @@ public sealed class SyncEngineTests
             ex = e;
             Console.WriteLine($"[CAUGHT] {e.GetType().FullName}: {e.Message}");
             Console.WriteLine(e.StackTrace ?? "");
-            if (e is AggregateException agg4)
+            if (e is AggregateException agg5)
             {
-                Console.WriteLine($"[INNER] {agg4.InnerException?.GetType().FullName}: {agg4.InnerException?.Message}");
-                Console.WriteLine(agg4.InnerException?.StackTrace ?? "");
+                Console.WriteLine($"[INNER] {agg5.InnerException?.GetType().FullName}: {agg5.InnerException?.Message}");
+                Console.WriteLine(agg5.InnerException?.StackTrace ?? "");
             }
         }
 
