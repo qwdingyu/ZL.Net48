@@ -119,7 +119,9 @@ public sealed class SyncEngineTests
         if (ex is AggregateException agg && agg.InnerException != null)
             ex = agg.InnerException;
 
-        Assert.Fail($"测试异常: {ex.GetType().Name}: {ex.Message}");
+        // 将实际异常重新抛出，确保 MSTest 在 TRX 中保留完整异常信息，
+        // 避免 Assert.Fail 被包装为泛型 "One or more errors occurred."
+        throw new InvalidOperationException($"测试异常: {ex.GetType().Name}: {ex.Message}", ex);
     }
 
     [TestMethod]
@@ -145,10 +147,7 @@ public sealed class SyncEngineTests
         }
 
         if (ex == null)
-        {
-            Log("[TEST FAIL] NO EXCEPTION CAUGHT");
-            Assert.Fail("未捕获到异常");
-        }
+            throw new InvalidOperationException("未捕获到异常");
 
         // MSTest 在 .NET Framework 4.8 下可能将异常包装为 AggregateException
         if (ex is AggregateException agg && agg.InnerException != null)
@@ -161,8 +160,9 @@ public sealed class SyncEngineTests
             return;
         }
 
-        // 将实际异常信息写入 Assert 失败消息，确保 TRX/ErrorInfo 可见
-        Assert.Fail($"预期 ArgumentNullException，实际: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+        // 将实际异常重新抛出，确保 MSTest 在 TRX 中保留完整异常信息，
+        // 避免 Assert.Fail 被包装为泛型 "One or more errors occurred."
+        throw new InvalidOperationException($"预期 ArgumentNullException，实际: {ex.GetType().FullName}: {ex.Message}", ex);
     }
 
     [TestMethod]
@@ -193,10 +193,7 @@ public sealed class SyncEngineTests
         }
 
         if (ex == null)
-        {
-            Log("[TEST FAIL] NO EXCEPTION CAUGHT");
-            Assert.Fail("未捕获到异常");
-        }
+            throw new InvalidOperationException("未捕获到异常");
 
         // MSTest 在 .NET Framework 4.8 下可能将异常包装为 AggregateException
         if (ex is AggregateException agg && agg.InnerException != null)
@@ -209,7 +206,8 @@ public sealed class SyncEngineTests
             return;
         }
 
-        // 将实际异常信息写入 Assert 失败消息，确保 TRX/ErrorInfo 可见
-        Assert.Fail($"预期 ArgumentException，实际: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+        // 将实际异常重新抛出，确保 MSTest 在 TRX 中保留完整异常信息，
+        // 避免 Assert.Fail 被包装为泛型 "One or more errors occurred."
+        throw new InvalidOperationException($"预期 ArgumentException，实际: {ex.GetType().FullName}: {ex.Message}", ex);
     }
 }
